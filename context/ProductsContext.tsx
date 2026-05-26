@@ -50,9 +50,7 @@ function getInitialProducts(): Product[] {
     try {
       const parsed = JSON.parse(stored);
       if (Array.isArray(parsed)) {
-        const migrated = parsed.map(migrateProduct);
-        const filtered = migrated.filter((p) => p.id > 25);
-        return deduplicateSlugs(filtered);
+        return deduplicateSlugs(parsed.map(migrateProduct));
       }
       return [];
     } catch {
