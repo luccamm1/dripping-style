@@ -3,11 +3,9 @@
 import { Suspense, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useOrders } from "@/context/OrdersContext";
 
 function FalloContent() {
   const searchParams = useSearchParams();
-  const { updateOrder } = useOrders();
   const processed = useRef(false);
 
   const externalRef = searchParams.get("external_reference");
@@ -16,9 +14,13 @@ function FalloContent() {
     if (processed.current) return;
     if (externalRef) {
       processed.current = true;
-      updateOrder(externalRef, { status: "fallido" });
+      fetch(`/api/orders/${externalRef}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "fallido" }),
+      });
     }
-  }, [externalRef, updateOrder]);
+  }, [externalRef]);
 
   return (
     <div className="max-w-lg mx-auto px-4 py-20 text-center">

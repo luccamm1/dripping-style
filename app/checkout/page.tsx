@@ -84,7 +84,7 @@ export default function CheckoutPage() {
       status: "pendiente" as const,
     };
 
-    addOrder(order);
+    await addOrder(order);
 
     try {
       const res = await fetch("/api/create-preference", {

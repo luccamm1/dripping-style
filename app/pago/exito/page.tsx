@@ -1,16 +1,16 @@
 "use client";
 
-import { Suspense, useEffect, useRef } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useOrders } from "@/context/OrdersContext";
 import { useCart } from "@/context/CartContext";
+import { Order } from "@/lib/types";
 
 function ExitoContent() {
   const searchParams = useSearchParams();
-  const { getOrder, updateOrder } = useOrders();
   const { clearCart } = useCart();
   const processed = useRef(false);
+  const [order, setOrder] = useState<Order | undefined>();
 
   const paymentId = searchParams.get("payment_id");
   const externalRef = searchParams.get("external_reference");
@@ -19,15 +19,24 @@ function ExitoContent() {
     if (processed.current) return;
     if (externalRef) {
       processed.current = true;
-      updateOrder(externalRef, {
-        status: "pagado",
-        paymentId: paymentId || undefined,
-      });
-      clearCart();
+      (async () => {
+        await fetch(`/api/orders/${externalRef}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            status: "pagado",
+            payment_id: paymentId || undefined,
+          }),
+        });
+        const res = await fetch(`/api/orders/${externalRef}`);
+        if (res.ok) {
+          const data = await res.json();
+          setOrder(data);
+        }
+        clearCart();
+      })();
     }
-  }, [externalRef, paymentId, updateOrder, clearCart]);
-
-  const order = externalRef ? getOrder(externalRef) : undefined;
+  }, [externalRef, paymentId, clearCart]);
 
   return (
     <div className="max-w-lg mx-auto px-4 py-20 text-center">
