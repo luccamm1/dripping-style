@@ -99,7 +99,7 @@ export default function AdminPage() {
 
   const [slugError, setSlugError] = useState("");
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     const slug = form.slug || form.name.toLowerCase().replace(/\s+/g, "-");
     const duplicate = products.find(
@@ -127,18 +127,26 @@ export default function AdminPage() {
       rating: 0,
     };
 
-    if (editingProduct) {
-      updateProduct(editingProduct.id, productData);
-    } else {
-      addProduct(productData);
+    try {
+      if (editingProduct) {
+        await updateProduct(editingProduct.id, productData);
+      } else {
+        await addProduct(productData);
+      }
+      setShowForm(false);
+      setEditingProduct(null);
+    } catch {
+      alert("Error al guardar el producto");
     }
-    setShowForm(false);
-    setEditingProduct(null);
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = async (id: number) => {
     if (window.confirm("¿Eliminar este producto?")) {
-      deleteProduct(id);
+      try {
+        await deleteProduct(id);
+      } catch {
+        alert("Error al eliminar el producto");
+      }
     }
   };
 
