@@ -1,0 +1,10 @@
+<svg width="600" height="700" viewBox="0 0 600 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="700" fill="#f3f4f6"/>
+  <path d="M200 300C200 277.909 217.909 260 240 260H360C382.091 260 400 277.909 400 300V420C400 442.091 382.091 460 360 460H240C217.909 460 200 442.091 200 420V300Z" fill="#d1d5db"/>
+  <path d="M240 260L260 220H340L360 260H240Z" fill="#d1d5db"/>
+  <rect x="270" y="310" width="60" height="90" rx="5" fill="#9ca3af"/>
+  <rect x="230" y="310" width="30" height="40" rx="5" fill="#9ca3af"/>
+  <rect x="340" y="310" width="30" height="40" rx="5" fill="#9ca3af"/>
+  <path d="M300 540C300 540 280 500 250 480C220 460 200 470 200 500C200 530 230 560 300 610C370 560 400 530 400 500C400 470 380 460 350 480C320 500 300 540 300 540Z" fill="#d1d5db"/>
+  <text x="300" y="660" text-anchor="middle" fill="#9ca3af" font-family="system-ui" font-size="16">Producto</text>
+</svg>
