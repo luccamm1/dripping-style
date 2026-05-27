@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useProducts } from "@/context/ProductsContext";
 import { categories } from "@/lib/categories";
@@ -12,33 +13,73 @@ export default function Home() {
 
   return (
     <div>
-      <section className="relative bg-zinc-900 min-h-[70vh] flex items-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="max-w-xl">
-            <span className="text-xs font-semibold uppercase tracking-widest text-zinc-400">
-              Colección 2026
-            </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mt-4 leading-tight text-white">
-              Define tu
-              <br />
-              <span className="italic">propio estilo</span>
-            </h1>
-            <p className="text-zinc-400 mt-4 text-lg leading-relaxed">
-              Descubre las últimas tendencias en moda moderna. Calidad y diseño en cada prenda.
-            </p>
-            <div className="flex gap-4 mt-8">
-              <Link
-                href="/productos"
-                className="bg-white text-black px-8 py-3 rounded-lg font-medium hover:bg-zinc-200 transition-colors"
-              >
-                Comprar ahora
-              </Link>
-              <Link
-                href="/productos"
-                className="border border-white text-white px-8 py-3 rounded-lg font-medium hover:bg-zinc-800 transition-colors"
-              >
-                Ver colección
-              </Link>
+      <section className="relative bg-zinc-900 min-h-[70vh] flex items-center overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
+          <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
+            <div className="w-full lg:w-5/12 shrink-0">
+              <span className="text-xs font-semibold uppercase tracking-widest text-zinc-400">
+                Colección 2026
+              </span>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mt-4 leading-tight text-white">
+                Define tu
+                <br />
+                <span className="italic">propio estilo</span>
+              </h1>
+              <p className="text-zinc-400 mt-4 text-lg leading-relaxed">
+                Descubre las últimas tendencias en moda moderna. Calidad y diseño en cada prenda.
+              </p>
+              <div className="flex gap-4 mt-8">
+                <Link
+                  href="/productos"
+                  className="bg-white text-black px-8 py-3 rounded-lg font-medium hover:bg-zinc-200 transition-colors"
+                >
+                  Comprar ahora
+                </Link>
+                <Link
+                  href="/productos"
+                  className="border border-white text-white px-8 py-3 rounded-lg font-medium hover:bg-zinc-800 transition-colors"
+                >
+                  Ver colección
+                </Link>
+              </div>
+            </div>
+            <div className="w-full lg:w-7/12 grid grid-cols-2 gap-3 sm:gap-4">
+              <div className="relative aspect-[3/4] rounded-xl overflow-hidden group">
+                <Image
+                  src="/images/duki-fashion-week.jfif"
+                  alt="Fashion"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  unoptimized
+                />
+              </div>
+              <div className="relative aspect-[3/4] rounded-xl overflow-hidden group translate-y-6">
+                <Image
+                  src="/images/cench.jfif"
+                  alt="Style"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  unoptimized
+                />
+              </div>
+              <div className="relative aspect-[3/4] rounded-xl overflow-hidden group -translate-y-6">
+                <Image
+                  src="/images/roa-pr.jfif"
+                  alt="Urban"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  unoptimized
+                />
+              </div>
+              <div className="relative aspect-[3/4] rounded-xl overflow-hidden group">
+                <Image
+                  src="/images/centralcee.jfif"
+                  alt="Trend"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  unoptimized
+                />
+              </div>
             </div>
           </div>
         </div>
