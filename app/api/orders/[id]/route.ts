@@ -9,6 +9,35 @@ export async function PUT(
     const { id } = await params;
     const body = await _req.json();
 
+    if (body.status === "pagado") {
+      const { data: order } = await supabase
+        .from("orders")
+        .select("items")
+        .eq("id", id)
+        .single();
+
+      if (order?.items) {
+        for (const item of order.items) {
+          const productId = item.product?.id || item.product_id;
+          const qty = item.quantity || 1;
+
+          const { data: product } = await supabase
+            .from("products")
+            .select("stock")
+            .eq("id", productId)
+            .single();
+
+          if (product) {
+            const newStock = Math.max(0, (product.stock || 0) - qty);
+            await supabase
+              .from("products")
+              .update({ stock: newStock })
+              .eq("id", productId);
+          }
+        }
+      }
+    }
+
     const { data, error } = await supabase
       .from("orders")
       .update(body)
