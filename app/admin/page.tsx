@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useProducts } from "@/context/ProductsContext";
 import { useOrders } from "@/context/OrdersContext";
-import { Product } from "@/lib/types";
+import { Product, Order } from "@/lib/types";
 import { categories } from "@/lib/categories";
 import { fileToDataUrl } from "@/lib/utils";
 
@@ -14,6 +14,7 @@ export default function AdminPage() {
   const { products, addProduct, updateProduct, deleteProduct } = useProducts();
   const { orders, deleteOrder } = useOrders();
   const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
+  const [viewingOrder, setViewingOrder] = useState<Order | null>(null);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [showForm, setShowForm] = useState(false);
 
@@ -501,7 +502,7 @@ export default function AdminPage() {
                 <tbody className="divide-y divide-zinc-800">
                   {orders.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className="px-4 py-12 text-center text-zinc-500">No hay pedidos</td>
+                      <td colSpan={8} className="px-4 py-12 text-center text-zinc-500">No hay pedidos</td>
                     </tr>
                   ) : (
                     orders.map((order) => {
@@ -551,6 +552,12 @@ export default function AdminPage() {
                         </td>
                         <td className="px-4 py-3 text-right">
                           <button
+                            onClick={() => setViewingOrder(order)}
+                            className="text-zinc-400 hover:text-white mr-3 transition-colors text-sm"
+                          >
+                            Ver
+                          </button>
+                          <button
                             onClick={() => {
                               if (window.confirm(`¿Eliminar pedido ${order.id}?`)) {
                                 deleteOrder(order.id);
@@ -569,6 +576,84 @@ export default function AdminPage() {
               </table>
             </div>
           </div>
+
+          {viewingOrder && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setViewingOrder(null)}>
+              <div className="bg-zinc-900 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 m-4 border border-zinc-800" onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-lg font-semibold text-white">Pedido {viewingOrder.id}</h2>
+                  <button
+                    onClick={() => setViewingOrder(null)}
+                    className="p-2 hover:bg-zinc-800 rounded-full text-zinc-400"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-2">Cliente</h3>
+                    <div className="bg-zinc-800 rounded-lg p-3 space-y-1.5 text-sm">
+                      <p><span className="text-zinc-400">Nombre:</span> {viewingOrder.shippingInfo?.name || "—"}</p>
+                      <p><span className="text-zinc-400">Email:</span> {viewingOrder.shippingInfo?.email || "—"}</p>
+                      <p><span className="text-zinc-400">Teléfono:</span> {viewingOrder.shippingInfo?.phone || "—"}</p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-2">Dirección de envío</h3>
+                    <div className="bg-zinc-800 rounded-lg p-3 space-y-1.5 text-sm">
+                      <p>{viewingOrder.shippingInfo?.address || "—"}</p>
+                      <p>{viewingOrder.shippingInfo?.city}, {viewingOrder.shippingInfo?.state} — CP: {viewingOrder.shippingInfo?.zip || "—"}</p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-2">Productos</h3>
+                    <div className="bg-zinc-800 rounded-lg p-3 space-y-2">
+                      {viewingOrder.items?.map((item, i) => (
+                        <div key={i} className="flex justify-between text-sm">
+                          <span className="text-zinc-300">
+                            {item.product.name} ({item.selectedSize}/{item.selectedColor}) x{item.quantity}
+                          </span>
+                          <span>${(item.product.price * item.quantity).toFixed(2)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="border-t border-zinc-700 pt-3 space-y-1.5 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-zinc-400">Subtotal</span>
+                      <span>${viewingOrder.subtotal.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-zinc-400">Envío</span>
+                      <span>{viewingOrder.shipping === 0 ? <span className="text-green-500">Gratis</span> : `$${viewingOrder.shipping.toFixed(2)}`}</span>
+                    </div>
+                    <div className="flex justify-between font-semibold text-base pt-1">
+                      <span>Total</span>
+                      <span>${viewingOrder.total.toFixed(2)}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-2">
+                    <span className="text-xs text-zinc-500">{viewingOrder.date}</span>
+                    <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
+                      viewingOrder.status === "pagado" ? "bg-green-100 text-green-800" :
+                      viewingOrder.status === "pendiente" ? "bg-yellow-100 text-yellow-800" :
+                      viewingOrder.status === "fallido" ? "bg-red-100 text-red-800" :
+                      "bg-gray-100 text-gray-800"
+                    }`}>
+                      {viewingOrder.status}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </>
       )}
     </div>
