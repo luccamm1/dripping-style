@@ -21,6 +21,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Dripping Style - Tienda de Ropa Moderna",
   description: "Descubre las últimas tendencias en moda. Ropa moderna para hombre y mujer.",
+  icons: {
+    icon: "/icon-ds.ico",
+  },
 };
 
 export default function RootLayout({
