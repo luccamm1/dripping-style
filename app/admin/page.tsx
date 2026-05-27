@@ -26,7 +26,7 @@ export default function AdminPage() {
     description: "",
     price: "",
     originalPrice: "",
-    category: "camisetas",
+    category: "remeras",
     sizes: "",
     colors: "",
     material: "",
@@ -282,6 +282,20 @@ export default function AdminPage() {
                         className="w-full border border-zinc-700 bg-zinc-800 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-white"
                         required
                       />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium mb-1 text-zinc-300">Categoría</label>
+                      <select
+                        value={form.category}
+                        onChange={(e) => setForm({ ...form, category: e.target.value })}
+                        className="w-full border border-zinc-700 bg-zinc-800 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-white"
+                      >
+                        {categories.map((cat) => (
+                          <option key={cat.id} value={cat.slug}>
+                            {cat.name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div className="col-span-2">
                       <label className="block text-xs font-medium mb-1 text-zinc-300">Material</label>
