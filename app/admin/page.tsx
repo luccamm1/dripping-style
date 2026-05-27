@@ -7,7 +7,7 @@ import { useProducts } from "@/context/ProductsContext";
 import { useOrders } from "@/context/OrdersContext";
 import { Product, Order } from "@/lib/types";
 import { categories } from "@/lib/categories";
-import { fileToDataUrl } from "@/lib/utils";
+import { compressImage } from "@/lib/utils";
 
 export default function AdminPage() {
   const router = useRouter();
@@ -44,7 +44,7 @@ export default function AdminPage() {
     if (!files) return;
     const newImages: string[] = [];
     for (let i = 0; i < files.length; i++) {
-      const dataUrl = await fileToDataUrl(files[i]);
+      const dataUrl = await compressImage(files[i], 800, 0.7);
       newImages.push(dataUrl);
     }
     setPreviewImages((prev) => [...prev, ...newImages]);
@@ -229,6 +229,15 @@ export default function AdminPage() {
                         required
                       />
                     </div>
+                    <div className="col-span-2">
+                      <label className="block text-xs font-medium mb-1 text-zinc-300">Descripción</label>
+                      <textarea
+                        value={form.description}
+                        onChange={(e) => setForm({ ...form, description: e.target.value })}
+                        className="w-full border border-zinc-700 bg-zinc-800 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-white resize-none"
+                        rows={3}
+                      />
+                    </div>
                     <div>
                       <label className="block text-xs font-medium mb-1 text-zinc-300">Slug</label>
                       <input
@@ -402,7 +411,7 @@ export default function AdminPage() {
             </div>
           )}
 
-          <div className="border border-zinc-800 rounded-xl overflow-hidden">
+          <div className="hidden md:block border border-zinc-800 rounded-xl overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead className="bg-zinc-800">
@@ -446,13 +455,44 @@ export default function AdminPage() {
               </table>
             </div>
           </div>
+
+          <div className="md:hidden space-y-3">
+            {products.map((product) => (
+              <div key={product.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
+                <div className="flex items-start justify-between mb-2">
+                  <div>
+                    <h3 className="font-medium text-white">{product.name}</h3>
+                    <p className="text-xs text-zinc-500 capitalize mt-0.5">{product.category} · ${product.price.toFixed(2)}</p>
+                  </div>
+                  <div className="flex gap-1.5">
+                    {product.isNew && <span className="text-xs bg-white text-black px-2 py-0.5 rounded-full">Nuevo</span>}
+                    {product.isFeatured && <span className="text-xs bg-zinc-700 text-zinc-300 px-2 py-0.5 rounded-full">Destacado</span>}
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => openEditForm(product)}
+                    className="flex-1 text-sm bg-zinc-800 text-zinc-300 py-2 rounded-lg hover:bg-zinc-700 transition-colors"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    onClick={() => handleDelete(product.id)}
+                    className="flex-1 text-sm bg-red-900/30 text-red-400 py-2 rounded-lg hover:bg-red-900/50 transition-colors"
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </>
       )}
 
       {tab === "orders" && (
         <>
           {selectedOrders.length > 0 && (
-            <div className="flex items-center gap-3 mb-4">
+            <div className="hidden md:flex items-center gap-3 mb-4">
               <span className="text-sm text-zinc-400">{selectedOrders.length} seleccionados</span>
               <button
                 onClick={() => {
@@ -473,7 +513,7 @@ export default function AdminPage() {
               </button>
             </div>
           )}
-          <div className="border border-zinc-800 rounded-xl overflow-hidden">
+          <div className="hidden md:block border border-zinc-800 rounded-xl overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead className="bg-zinc-800">
@@ -576,6 +616,107 @@ export default function AdminPage() {
                 </tbody>
               </table>
             </div>
+          </div>
+
+          <div className="md:hidden space-y-3">
+            {orders.length === 0 ? (
+              <p className="text-center text-zinc-500 py-12">No hay pedidos</p>
+            ) : (
+              <>
+                {selectedOrders.length > 0 && (
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-sm text-zinc-400">{selectedOrders.length} seleccionados</span>
+                    <button
+                      onClick={() => {
+                        if (window.confirm(`¿Eliminar ${selectedOrders.length} pedidos?`)) {
+                          selectedOrders.forEach(deleteOrder);
+                          setSelectedOrders([]);
+                        }
+                      }}
+                      className="text-sm text-red-500 hover:text-red-400 underline underline-offset-2 transition-colors"
+                    >
+                      Eliminar
+                    </button>
+                    <button
+                      onClick={() => setSelectedOrders([])}
+                      className="text-sm text-zinc-500 hover:text-zinc-400 underline underline-offset-2 transition-colors"
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                )}
+                {orders.map((order) => {
+                  const statusColors: Record<string, string> = {
+                    pendiente: "bg-yellow-100 text-yellow-800",
+                    pagado: "bg-green-100 text-green-800",
+                    fallido: "bg-red-100 text-red-800",
+                    enviado: "bg-blue-100 text-blue-800",
+                    entregado: "bg-green-100 text-green-800",
+                    cancelado: "bg-red-100 text-red-800",
+                  };
+                  const statusLabels: Record<string, string> = {
+                    pendiente: "Pendiente",
+                    pagado: "Pagado",
+                    fallido: "Fallido",
+                    enviado: "Enviado",
+                    entregado: "Entregado",
+                    cancelado: "Cancelado",
+                  };
+                  const isSelected = selectedOrders.includes(order.id);
+                  return (
+                    <div key={order.id} className={`bg-zinc-900 border border-zinc-800 rounded-xl p-4 ${isSelected ? "ring-1 ring-white" : ""}`}>
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            checked={isSelected}
+                            onChange={() => {
+                              setSelectedOrders((prev) =>
+                                prev.includes(order.id)
+                                  ? prev.filter((id) => id !== order.id)
+                                  : [...prev, order.id]
+                              );
+                            }}
+                            className="accent-white"
+                          />
+                          <div>
+                            <p className="font-medium text-white text-sm">{order.id}</p>
+                            <p className="text-xs text-zinc-400">{order.shippingInfo?.name || "—"}</p>
+                          </div>
+                        </div>
+                        <span
+                          className={`text-xs font-medium px-2.5 py-1 rounded-full ${statusColors[order.status] || "bg-gray-100 text-gray-800"}`}
+                        >
+                          {statusLabels[order.status] || order.status}
+                        </span>
+                      </div>
+                      <div className="flex justify-between text-xs text-zinc-500 mb-3">
+                        <span>{order.date}</span>
+                        <span>${order.total.toFixed(2)}</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => setViewingOrder(order)}
+                          className="flex-1 text-sm bg-zinc-800 text-zinc-300 py-2 rounded-lg hover:bg-zinc-700 transition-colors"
+                        >
+                          Ver
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (window.confirm(`¿Eliminar pedido ${order.id}?`)) {
+                              deleteOrder(order.id);
+                            }
+                          }}
+                          className="flex-1 text-sm bg-red-900/30 text-red-400 py-2 rounded-lg hover:bg-red-900/50 transition-colors"
+                        >
+                          Eliminar
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
+            )}
           </div>
 
           {viewingOrder && (
