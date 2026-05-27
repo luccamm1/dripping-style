@@ -18,7 +18,7 @@ export default function AdminPage() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [showForm, setShowForm] = useState(false);
 
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [form, setForm] = useState({
@@ -31,7 +31,7 @@ export default function AdminPage() {
     sizes: "",
     colors: "",
     material: "",
-    image: "",
+    images: [] as string[],
     stock: "",
     isNew: false,
     isFeatured: false,
@@ -40,17 +40,20 @@ export default function AdminPage() {
   const [tab, setTab] = useState<"products" | "orders">("products");
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const dataUrl = await fileToDataUrl(file);
-      setPreviewImage(dataUrl);
-      setForm((prev) => ({ ...prev, image: dataUrl }));
+    const files = e.target.files;
+    if (!files) return;
+    const newImages: string[] = [];
+    for (let i = 0; i < files.length; i++) {
+      const dataUrl = await fileToDataUrl(files[i]);
+      newImages.push(dataUrl);
     }
+    setPreviewImages((prev) => [...prev, ...newImages]);
+    setForm((prev) => ({ ...prev, images: [...prev.images, ...newImages] }));
   };
 
-  const removeImage = () => {
-    setPreviewImage(null);
-    setForm((prev) => ({ ...prev, image: "" }));
+  const removeImage = (index: number) => {
+    setPreviewImages((prev) => prev.filter((_, i) => i !== index));
+    setForm((prev) => ({ ...prev, images: prev.images.filter((_, i) => i !== index) }));
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
@@ -65,17 +68,18 @@ export default function AdminPage() {
       sizes: "",
       colors: "",
       material: "",
-      image: "",
+      images: [],
       stock: "",
       isNew: false,
       isFeatured: false,
     });
-    setPreviewImage(null);
+    setPreviewImages([]);
     setEditingProduct(null);
     setShowForm(true);
   };
 
   const openEditForm = (product: Product) => {
+    const existingImages = product.images.filter((img) => img.startsWith("data:"));
     setForm({
       name: product.name,
       slug: product.slug,
@@ -86,14 +90,12 @@ export default function AdminPage() {
       sizes: product.sizes.join(", "),
       colors: product.colors.join(", "),
       material: product.material,
-      image: product.images[0].startsWith("data:") ? product.images[0] : "",
+      images: existingImages,
       stock: product.stock != null ? product.stock.toString() : "0",
       isNew: product.isNew || false,
       isFeatured: product.isFeatured || false,
     });
-    setPreviewImage(
-      product.images[0].startsWith("data:") ? product.images[0] : null
-    );
+    setPreviewImages(existingImages);
     setEditingProduct(product);
     setShowForm(true);
   };
@@ -117,7 +119,7 @@ export default function AdminPage() {
       description: form.description,
       price: Number(form.price),
       originalPrice: form.originalPrice ? Number(form.originalPrice) : undefined,
-      images: form.image ? [form.image] : ["/images/placeholder.svg"],
+      images: form.images.length ? form.images : ["/images/placeholder.svg"],
       stock: Number(form.stock) || 0,
       category: form.category,
       sizes: form.sizes.split(",").map((s) => s.trim()),
@@ -309,43 +311,42 @@ export default function AdminPage() {
                       />
                     </div>
                     <div className="col-span-2">
-                      <label className="block text-xs font-medium mb-1 text-zinc-300">Imagen</label>
-                      <div className="flex items-start gap-4">
-                        <div className="relative w-24 h-30 bg-zinc-800 rounded-lg overflow-hidden flex-shrink-0">
-                          {previewImage ? (
+                      <label className="block text-xs font-medium mb-1 text-zinc-300">Imágenes</label>
+                      <div className="flex flex-wrap gap-3">
+                        {previewImages.map((img, i) => (
+                          <div key={i} className="relative w-20 h-24 bg-zinc-800 rounded-lg overflow-hidden group">
                             <Image
-                              src={previewImage}
-                              alt="Preview"
+                              src={img}
+                              alt={`Imagen ${i + 1}`}
                               fill
                               className="object-cover"
                               unoptimized
                             />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center text-zinc-500">
-                              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            <button
+                              type="button"
+                              onClick={() => removeImage(i)}
+                              className="absolute top-1 right-1 w-5 h-5 bg-red-600 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                               </svg>
-                            </div>
-                          )}
-                        </div>
-                        <div className="flex flex-col gap-2">
+                            </button>
+                          </div>
+                        ))}
+                        <label className="w-20 h-24 bg-zinc-800 rounded-lg border-2 border-dashed border-zinc-600 flex flex-col items-center justify-center cursor-pointer hover:border-zinc-400 transition-colors text-zinc-500">
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
+                          </svg>
+                          <span className="text-xs mt-1">Agregar</span>
                           <input
                             ref={fileInputRef}
                             type="file"
+                            multiple
                             accept="image/*"
                             onChange={handleImageChange}
-                            className="text-xs text-zinc-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-zinc-800 file:text-zinc-200 hover:file:bg-zinc-700"
+                            className="hidden"
                           />
-                          {previewImage && (
-                            <button
-                              type="button"
-                              onClick={removeImage}
-                              className="text-xs text-red-500 hover:text-red-700 underline underline-offset-2 self-start"
-                            >
-                              Quitar imagen
-                            </button>
-                          )}
-                        </div>
+                        </label>
                       </div>
                     </div>
                     <div>
