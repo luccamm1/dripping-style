@@ -87,7 +87,7 @@ export default function Filters({
         <input
           type="range"
           min="0"
-          max="200"
+          max="300"
           step="10"
           value={maxPrice}
           onChange={(e) => onPriceChange(e.target.value)}
