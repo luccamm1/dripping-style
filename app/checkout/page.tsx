@@ -22,10 +22,21 @@ export default function CheckoutPage() {
     zip: "",
   });
 
+  const [shippingZone, setShippingZone] = useState("capital");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
 
-  const shipping = subtotal >= 50 ? 0 : 9.99;
+  const FREE_SHIPPING_THRESHOLD = 80000;
+
+  const getShippingCost = (zone: string, sub: number) => {
+    if (sub >= FREE_SHIPPING_THRESHOLD) return 0;
+    if (zone === "capital") return 0;
+    if (zone === "interior") return 4000;
+    if (zone === "resto_pais") return 8000;
+    return 0;
+  };
+
+  const shipping = getShippingCost(shippingZone, subtotal);
   const total = subtotal + shipping;
 
   if (items.length === 0) {
@@ -287,8 +298,62 @@ export default function CheckoutPage() {
                 <span>${total.toFixed(2)}</span>
               </div>
             </div>
-          </div>
-        </div>
+                </div>
+              </div>
+
+              <div className="border-t border-zinc-800 pt-4">
+                <p className="text-sm font-medium mb-3 text-white">Zona de envío</p>
+                {subtotal < FREE_SHIPPING_THRESHOLD && (
+                  <p className="text-xs text-zinc-500 mb-3">Envío gratis superando los ${FREE_SHIPPING_THRESHOLD.toLocaleString("es-AR")}</p>
+                )}
+                <div className="space-y-2">
+                  <label className="flex items-center gap-3 p-3 rounded-lg border border-zinc-700 bg-zinc-800 cursor-pointer has-[:checked]:border-white has-[:checked]:bg-zinc-700 transition-colors">
+                    <input
+                      type="radio"
+                      name="shippingZone"
+                      value="capital"
+                      checked={shippingZone === "capital"}
+                      onChange={() => setShippingZone("capital")}
+                      className="accent-white"
+                    />
+                    <div className="flex-1 flex justify-between items-center">
+                      <span className="text-sm">Tucumán capital</span>
+                      <span className="text-xs font-medium text-green-500">Gratis</span>
+                    </div>
+                  </label>
+                  <label className="flex items-center gap-3 p-3 rounded-lg border border-zinc-700 bg-zinc-800 cursor-pointer has-[:checked]:border-white has-[:checked]:bg-zinc-700 transition-colors">
+                    <input
+                      type="radio"
+                      name="shippingZone"
+                      value="interior"
+                      checked={shippingZone === "interior"}
+                      onChange={() => setShippingZone("interior")}
+                      className="accent-white"
+                    />
+                    <div className="flex-1 flex justify-between items-center">
+                      <span className="text-sm">Resto de Tucumán</span>
+                      <span className="text-xs font-medium">$4.000</span>
+                    </div>
+                  </label>
+                  <label className="flex items-center gap-3 p-3 rounded-lg border border-zinc-700 bg-zinc-800 cursor-pointer has-[:checked]:border-white has-[:checked]:bg-zinc-700 transition-colors">
+                    <input
+                      type="radio"
+                      name="shippingZone"
+                      value="resto_pais"
+                      checked={shippingZone === "resto_pais"}
+                      onChange={() => setShippingZone("resto_pais")}
+                      className="accent-white"
+                    />
+                    <div className="flex-1 flex justify-between items-center">
+                      <span className="text-sm">Resto del país</span>
+                      <span className="text-xs font-medium">$8.000</span>
+                    </div>
+                  </label>
+                </div>
+                {subtotal >= FREE_SHIPPING_THRESHOLD && (
+                  <p className="text-xs text-green-500 mt-2">¡Envío gratis aplicado por superar los ${FREE_SHIPPING_THRESHOLD.toLocaleString("es-AR")}!</p>
+                )}
+              </div>
       </div>
     </div>
   );

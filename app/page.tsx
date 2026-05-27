@@ -144,7 +144,7 @@ export default function Home() {
               </svg>
             </div>
             <h3 className="font-semibold mb-2 text-white">Envío gratis</h3>
-            <p className="text-sm text-zinc-400">En pedidos superiores a $50</p>
+            <p className="text-sm text-zinc-400">En pedidos superiores a $80.000</p>
           </div>
           <div className="p-6">
             <div className="w-12 h-12 bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-4">
