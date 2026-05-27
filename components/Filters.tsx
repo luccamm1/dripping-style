@@ -87,8 +87,8 @@ export default function Filters({
         <input
           type="range"
           min="0"
-          max="300"
-          step="10"
+          max="300000"
+          step="1000"
           value={maxPrice}
           onChange={(e) => onPriceChange(e.target.value)}
           className="w-full accent-white"
