@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   title: "Dripping Style - Tienda de Ropa Moderna",
   description: "Descubre las últimas tendencias en moda. Ropa moderna para hombre y mujer.",
   icons: {
-    icon: "/favicon.jpg",
+    icon: "/favicon.jpg?v=2",
   },
 };
 
