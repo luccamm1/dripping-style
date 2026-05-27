@@ -23,6 +23,7 @@ export default function Footer() {
               <li><Link href="/productos" className="text-sm hover:text-white transition-colors">Todos los productos</Link></li>
               <li><Link href="/productos?categoria=nuevos" className="text-sm hover:text-white transition-colors">Nuevos</Link></li>
               <li><Link href="/productos?categoria=destacados" className="text-sm hover:text-white transition-colors">Destacados</Link></li>
+              <li><Link href="/admin" className="text-sm hover:text-white transition-colors">Admin</Link></li>
             </ul>
           </div>
 

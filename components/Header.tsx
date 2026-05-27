@@ -37,9 +37,6 @@ export default function Header() {
                 ))}
               </div>
             </div>
-            <Link href="/admin" className="text-sm font-medium text-zinc-300 hover:text-white transition-colors">
-              Admin
-            </Link>
           </nav>
 
           <div className="flex items-center gap-4">
@@ -89,9 +86,6 @@ export default function Header() {
                 {cat.name}
               </Link>
             ))}
-            <Link href="/admin" className="block text-sm font-medium text-white" onClick={() => setMenuOpen(false)}>
-              Admin
-            </Link>
           </div>
         </div>
       )}
