@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const initPoint = data.sandbox_init_point || data.init_point;
+    const initPoint = data.init_point;
 
     if (!initPoint) {
       return NextResponse.json(
