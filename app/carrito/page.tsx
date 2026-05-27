@@ -25,7 +25,8 @@ export default function CarritoPage() {
     );
   }
 
-  const shipping = subtotal >= 50 ? 0 : 9.99;
+  const FREE_SHIPPING_THRESHOLD = 80000;
+  const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : 0;
   const total = subtotal + shipping;
 
   return (
@@ -126,11 +127,11 @@ export default function CarritoPage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-400">Envío</span>
-                <span>
-                  {shipping === 0 ? (
-                    <span className="text-green-600">Gratis</span>
+                <span className="text-xs text-zinc-500">
+                  {subtotal >= 80000 ? (
+                    <span className="text-green-500 text-sm font-medium">Gratis</span>
                   ) : (
-                    `$${shipping.toFixed(2)}`
+                    "Se calcula en checkout"
                   )}
                 </span>
               </div>
