@@ -14,7 +14,7 @@ function ProductosContent() {
 
   const selectedCategory = categoryParam;
   const [selectedSize, setSelectedSize] = useState("");
-  const [maxPrice, setMaxPrice] = useState("200");
+  const [maxPrice, setMaxPrice] = useState("300000");
   const [sortBy, setSortBy] = useState("");
   const [inStock, setInStock] = useState(false);
 
@@ -55,7 +55,7 @@ function ProductosContent() {
 
   const resetFilters = () => {
     setSelectedSize("");
-    setMaxPrice("200");
+    setMaxPrice("300000");
     setSortBy("");
     setInStock(false);
     router.push("/productos");
