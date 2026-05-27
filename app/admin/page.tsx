@@ -64,7 +64,7 @@ export default function AdminPage() {
       description: "",
       price: "",
       originalPrice: "",
-      category: "camisetas",
+      category: "remeras",
       sizes: "",
       colors: "",
       material: "",
