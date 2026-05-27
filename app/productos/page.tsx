@@ -1,17 +1,18 @@
 "use client";
 
 import { Suspense, useState, useMemo } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useProducts } from "@/context/ProductsContext";
 import ProductGrid from "@/components/ProductGrid";
 import Filters from "@/components/Filters";
 
 function ProductosContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const categoryParam = searchParams.get("categoria") || "";
   const { products } = useProducts();
 
-  const [selectedCategory, setSelectedCategory] = useState(categoryParam);
+  const selectedCategory = categoryParam;
   const [selectedSize, setSelectedSize] = useState("");
   const [maxPrice, setMaxPrice] = useState("200");
   const [sortBy, setSortBy] = useState("");
@@ -53,11 +54,11 @@ function ProductosContent() {
   }, [products, selectedCategory, selectedSize, maxPrice, sortBy, inStock]);
 
   const resetFilters = () => {
-    setSelectedCategory("");
     setSelectedSize("");
     setMaxPrice("200");
     setSortBy("");
     setInStock(false);
+    router.push("/productos");
   };
 
   return (
@@ -68,7 +69,7 @@ function ProductosContent() {
         maxPrice={maxPrice}
         sortBy={sortBy}
         inStock={inStock}
-        onCategoryChange={setSelectedCategory}
+        onCategoryChange={(cat) => router.push(cat ? `/productos?categoria=${cat}` : "/productos")}
         onSizeChange={setSelectedSize}
         onPriceChange={setMaxPrice}
         onSortChange={setSortBy}

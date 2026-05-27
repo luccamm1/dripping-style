@@ -3,11 +3,27 @@
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { categories } from "@/lib/categories";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export default function Header() {
   const { totalItems, toggleCart } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [catOpen, setCatOpen] = useState(false);
+  const catRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (catRef.current && !catRef.current.contains(e.target as Node)) {
+        setCatOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleCatClick = () => {
+    setCatOpen(false);
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-zinc-950/80 backdrop-blur-lg border-b border-zinc-800">
@@ -21,21 +37,27 @@ export default function Header() {
             <Link href="/" className="text-sm font-medium text-zinc-300 hover:text-white transition-colors">
               Inicio
             </Link>
-            <div className="relative group">
-              <button className="text-sm font-medium text-zinc-300 hover:text-white transition-colors">
+            <div className="relative" ref={catRef}>
+              <button
+                onClick={() => setCatOpen(!catOpen)}
+                className="text-sm font-medium text-zinc-300 hover:text-white transition-colors"
+              >
                 Productos
               </button>
-              <div className="absolute top-full left-0 mt-2 w-48 bg-zinc-900 border border-zinc-700 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                {categories.map((cat) => (
-                  <Link
-                    key={cat.id}
-                    href={`/productos?categoria=${cat.slug}`}
-                    className="block px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors"
-                  >
-                    {cat.name}
-                  </Link>
-                ))}
-              </div>
+              {catOpen && (
+                <div className="absolute top-full left-0 mt-2 w-48 bg-zinc-900 border border-zinc-700 rounded-lg shadow-xl">
+                  {categories.map((cat) => (
+                    <Link
+                      key={cat.id}
+                      href={`/productos?categoria=${cat.slug}`}
+                      onClick={handleCatClick}
+                      className="block px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors"
+                    >
+                      {cat.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
           </nav>
 
