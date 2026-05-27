@@ -19,6 +19,7 @@ export default function ProductoPage() {
   const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [quantity, setQuantity] = useState(1);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const relatedProducts = products
     .filter((p) => p.category === product.category && p.id !== product.id)
@@ -39,20 +40,43 @@ export default function ProductoPage() {
       </nav>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-        <div className="relative aspect-[4/5] bg-zinc-800 rounded-2xl overflow-hidden">
-          <Image
-            src={product.images[0]}
-            alt={product.name}
-            fill
-            className="object-cover"
-            priority
-            sizes="(max-width: 768px) 100vw, 50vw"
-            unoptimized
-          />
-          {product.isNew && (
-            <span className="absolute top-4 left-4 bg-white text-black text-xs font-medium px-3 py-1.5 rounded-full">
-              Nuevo
-            </span>
+        <div>
+          <div className="relative aspect-[4/5] bg-zinc-800 rounded-2xl overflow-hidden">
+            <Image
+              src={product.images[selectedImageIndex] || product.images[0]}
+              alt={product.name}
+              fill
+              className="object-cover transition-opacity duration-300"
+              priority
+              sizes="(max-width: 768px) 100vw, 50vw"
+              unoptimized
+            />
+            {product.isNew && (
+              <span className="absolute top-4 left-4 bg-white text-black text-xs font-medium px-3 py-1.5 rounded-full">
+                Nuevo
+              </span>
+            )}
+          </div>
+          {product.images.length > 1 && (
+            <div className="flex gap-2 mt-3">
+              {product.images.map((img, i) => (
+                <button
+                  key={i}
+                  onClick={() => setSelectedImageIndex(i)}
+                  className={`relative w-16 h-20 rounded-lg overflow-hidden border-2 transition-colors ${
+                    selectedImageIndex === i ? "border-white" : "border-transparent opacity-60 hover:opacity-100"
+                  }`}
+                >
+                  <Image
+                    src={img}
+                    alt={`${product.name} ${i + 1}`}
+                    fill
+                    className="object-cover"
+                    unoptimized
+                  />
+                </button>
+              ))}
+            </div>
           )}
         </div>
 
