@@ -88,7 +88,7 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <h2 className="text-2xl font-bold mb-8 text-white">Categorías</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {categories.slice(0, 4).map((cat) => (
+          {categories.map((cat) => (
             <Link
               key={cat.id}
               href={`/productos?categoria=${cat.slug}`}
