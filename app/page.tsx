@@ -34,78 +34,77 @@ export default function Home() {
   return (
     <div>
       {/* ─── HERO ─── */}
-      <section className="relative bg-zinc-900 min-h-screen flex items-center overflow-hidden">
-        <Image
-          src="/images/duki-fashion-week.jfif"
-          alt=""
-          fill
-          className="object-cover object-center scale-105"
-          unoptimized
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/95 via-zinc-950/80 to-zinc-950/60" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_#09090b_100%)] opacity-40" />
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-zinc-500/40 to-transparent" />
-
-        {/* Floating thumbnails — hidden on mobile */}
-        <div className="hidden lg:block">
-          <div className="absolute top-20 right-10 w-36 h-48 rounded-2xl overflow-hidden shadow-2xl rotate-6 hover:rotate-3 transition-transform duration-500">
+      <section className="relative bg-zinc-900 min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Background images grid */}
+        <div className="absolute inset-0 grid grid-cols-2">
+          <div className="relative overflow-hidden">
+            <Image
+              src="/images/duki-fashion-week.jfif"
+              alt=""
+              fill
+              className="object-cover opacity-15 scale-105"
+              unoptimized
+              priority
+            />
+          </div>
+          <div className="relative overflow-hidden">
             <Image
               src="/images/cench.jfif"
               alt=""
               fill
-              className="object-cover"
+              className="object-cover opacity-15 scale-105"
               unoptimized
             />
-            <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl" />
           </div>
-          <div className="absolute bottom-24 right-32 w-32 h-44 rounded-2xl overflow-hidden shadow-2xl -rotate-3 hover:rotate-0 transition-transform duration-500">
-            <Image
-              src="/images/centralcee.jfif"
-              alt=""
-              fill
-              className="object-cover"
-              unoptimized
-            />
-            <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl" />
-          </div>
-          <div className="absolute bottom-40 right-4 w-28 h-36 rounded-2xl overflow-hidden shadow-2xl rotate-12 hover:rotate-6 transition-transform duration-500">
+          <div className="relative overflow-hidden">
             <Image
               src="/images/roa-pr.jfif"
               alt=""
               fill
-              className="object-cover"
+              className="object-cover opacity-15 scale-105"
               unoptimized
             />
-            <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl" />
+          </div>
+          <div className="relative overflow-hidden">
+            <Image
+              src="/images/centralcee.jfif"
+              alt=""
+              fill
+              className="object-cover opacity-15 scale-105"
+              unoptimized
+            />
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 w-full relative z-10">
-          <div className="max-w-xl">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-zinc-700 bg-zinc-900/60 backdrop-blur-sm text-xs font-medium text-zinc-400 mb-6 animate-fade-in-up">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-glow" />
-              Nueva colección 2026
-            </div>
-            <h1 className="text-5xl sm:text-6xl lg:text-8xl font-bold mt-4 leading-[1.05] text-white">
-              Define tu
-              <br />
-              <span className="text-gradient-white italic">propio estilo</span>
-            </h1>
-            <p className="text-zinc-400 mt-5 text-lg leading-relaxed">
-              Descubre las últimas tendencias en moda moderna. Calidad y diseño en cada prenda.
-            </p>
-            <div className="flex gap-4 mt-10">
-              <Link href="/productos" className="btn-primary">
-                Comprar ahora
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </Link>
-              <Link href="/productos" className="btn-outline">
-                Ver colección
-              </Link>
-            </div>
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-zinc-950/40" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_30%,_#09090b_100%)] opacity-60" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-zinc-500/30 to-transparent" />
+
+        {/* Content */}
+        <div className="relative z-10 max-w-3xl mx-auto px-4 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-zinc-700 bg-zinc-900/60 backdrop-blur-sm text-xs font-medium text-zinc-400 mb-6 animate-fade-in-up">
+            <span className="w-2 h-2 rounded-full bg-green-500 animate-glow" />
+            Nueva colección 2026
+          </div>
+          <h1 className="text-5xl sm:text-6xl lg:text-8xl font-bold mt-4 leading-[1.05] text-white">
+            Define tu
+            <br />
+            <span className="text-gradient-white italic">propio estilo</span>
+          </h1>
+          <p className="text-zinc-400 mt-5 text-lg leading-relaxed max-w-xl mx-auto">
+            Descubre las últimas tendencias en moda moderna. Calidad y diseño en cada prenda.
+          </p>
+          <div className="flex items-center justify-center gap-4 mt-10">
+            <Link href="/productos" className="btn-primary">
+              Comprar ahora
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+            <Link href="/productos" className="btn-outline">
+              Ver colección
+            </Link>
           </div>
         </div>
       </section>
