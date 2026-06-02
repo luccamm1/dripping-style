@@ -35,77 +35,76 @@ export default function Home() {
     <div>
       {/* ─── HERO ─── */}
       <section className="relative bg-zinc-900 min-h-screen flex items-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-zinc-800/40 via-zinc-900/60 to-zinc-950/80 animate-gradient" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_#27272a_0%,_transparent_50%)]" />
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-zinc-500/50 to-transparent" />
+        <Image
+          src="/images/duki-fashion-week.jfif"
+          alt=""
+          fill
+          className="object-cover object-center scale-105"
+          unoptimized
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/95 via-zinc-950/80 to-zinc-950/60" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_#09090b_100%)] opacity-40" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-zinc-500/40 to-transparent" />
+
+        {/* Floating thumbnails — hidden on mobile */}
+        <div className="hidden lg:block">
+          <div className="absolute top-20 right-10 w-36 h-48 rounded-2xl overflow-hidden shadow-2xl rotate-6 hover:rotate-3 transition-transform duration-500">
+            <Image
+              src="/images/cench.jfif"
+              alt=""
+              fill
+              className="object-cover"
+              unoptimized
+            />
+            <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl" />
+          </div>
+          <div className="absolute bottom-24 right-32 w-32 h-44 rounded-2xl overflow-hidden shadow-2xl -rotate-3 hover:rotate-0 transition-transform duration-500">
+            <Image
+              src="/images/centralcee.jfif"
+              alt=""
+              fill
+              className="object-cover"
+              unoptimized
+            />
+            <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl" />
+          </div>
+          <div className="absolute bottom-40 right-4 w-28 h-36 rounded-2xl overflow-hidden shadow-2xl rotate-12 hover:rotate-6 transition-transform duration-500">
+            <Image
+              src="/images/roa-pr.jfif"
+              alt=""
+              fill
+              className="object-cover"
+              unoptimized
+            />
+            <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl" />
+          </div>
+        </div>
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 w-full relative z-10">
-          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-            <div className="w-full lg:w-5/12 shrink-0">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-zinc-700 bg-zinc-800/50 text-xs font-medium text-zinc-400 mb-6 animate-fade-in-up">
-                <span className="w-2 h-2 rounded-full bg-green-500 animate-glow" />
-                Nueva colección 2026
-              </div>
-              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold mt-4 leading-[1.1] text-white">
-                Define tu
-                <br />
-                <span className="text-gradient-white italic">propio estilo</span>
-              </h1>
-              <p className="text-zinc-400 mt-5 text-lg leading-relaxed max-w-md">
-                Descubre las últimas tendencias en moda moderna. Calidad y diseño en cada prenda.
-              </p>
-              <div className="flex gap-4 mt-10">
-                <Link href="/productos" className="btn-primary">
-                  Comprar ahora
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </Link>
-                <Link href="/productos" className="btn-outline">
-                  Ver colección
-                </Link>
-              </div>
+          <div className="max-w-xl">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-zinc-700 bg-zinc-900/60 backdrop-blur-sm text-xs font-medium text-zinc-400 mb-6 animate-fade-in-up">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-glow" />
+              Nueva colección 2026
             </div>
-            <div className="w-full lg:w-7/12 grid grid-cols-2 gap-3 sm:gap-4">
-              <div className="relative aspect-[3/4] rounded-2xl overflow-hidden group">
-                <Image
-                  src="/images/duki-fashion-week.jfif"
-                  alt="Fashion"
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-700"
-                  unoptimized
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
-              </div>
-              <div className="relative aspect-[3/4] rounded-2xl overflow-hidden group translate-y-8">
-                <Image
-                  src="/images/cench.jfif"
-                  alt="Style"
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-700"
-                  unoptimized
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
-              </div>
-              <div className="relative aspect-[3/4] rounded-2xl overflow-hidden group -translate-y-8">
-                <Image
-                  src="/images/roa-pr.jfif"
-                  alt="Urban"
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-700"
-                  unoptimized
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
-              </div>
-              <div className="relative aspect-[3/4] rounded-2xl overflow-hidden group">
-                <Image
-                  src="/images/centralcee.jfif"
-                  alt="Trend"
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-700"
-                  unoptimized
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
-              </div>
+            <h1 className="text-5xl sm:text-6xl lg:text-8xl font-bold mt-4 leading-[1.05] text-white">
+              Define tu
+              <br />
+              <span className="text-gradient-white italic">propio estilo</span>
+            </h1>
+            <p className="text-zinc-400 mt-5 text-lg leading-relaxed">
+              Descubre las últimas tendencias en moda moderna. Calidad y diseño en cada prenda.
+            </p>
+            <div className="flex gap-4 mt-10">
+              <Link href="/productos" className="btn-primary">
+                Comprar ahora
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+              <Link href="/productos" className="btn-outline">
+                Ver colección
+              </Link>
             </div>
           </div>
         </div>
