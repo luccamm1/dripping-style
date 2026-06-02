@@ -40,8 +40,8 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="text-2xl font-bold tracking-tight text-white hover:text-zinc-200 transition-colors">
-            <span className="text-white">Dripping</span>{" "}
-            <span className="text-zinc-400 font-normal italic">Style</span>
+            <span className="text-white">TKBRON</span>{" "}
+            <span className="text-zinc-400 font-normal italic">CLOTHS</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-10">

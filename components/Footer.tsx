@@ -10,14 +10,14 @@ export default function Footer() {
             {/* Brand */}
             <div className="md:col-span-2">
               <h3 className="text-white text-xl font-bold tracking-tight mb-4">
-                Dripping <span className="text-zinc-400 font-normal italic">Style</span>
+                TKBRON <span className="text-zinc-400 font-normal italic">CLOTHS</span>
               </h3>
               <p className="text-sm text-zinc-500 leading-relaxed mb-6 max-w-xs">
                 Tu tienda de ropa moderna con las últimas tendencias en moda urbana. Calidad y estilo en cada prenda.
               </p>
               <div className="flex items-center gap-2.5">
                 <a
-                  href="https://instagram.com"
+                  href="https://www.instagram.com/tkbronclothss/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 rounded-xl bg-zinc-800/80 flex items-center justify-center hover:bg-zinc-700 transition-colors text-zinc-400 hover:text-white"
@@ -103,7 +103,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-zinc-800/50 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-zinc-600">
-          <p>&copy; {new Date().getFullYear()} Dripping Style. Todos los derechos reservados.</p>
+          <p>&copy; {new Date().getFullYear()} TKBRON CLOTHS. Todos los derechos reservados.</p>
           <div className="flex items-center gap-6 text-xs">
             <span className="hover:text-zinc-400 cursor-pointer transition-colors">Términos y condiciones</span>
             <span className="hover:text-zinc-400 cursor-pointer transition-colors">Política de privacidad</span>

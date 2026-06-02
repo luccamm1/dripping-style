@@ -72,7 +72,7 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-white">
-            Dripping Style
+            TKBRON CLOTHS
           </h1>
           <p className="text-sm text-zinc-400 mt-1">Acceso al panel de administración</p>
         </div>

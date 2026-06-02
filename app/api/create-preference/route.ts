@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
-        "User-Agent": "DrippingStyle/1.0",
+        "User-Agent": "TKBRONCLOTHS/1.0",
       },
       body: JSON.stringify(body),
     });
