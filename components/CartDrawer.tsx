@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
+import { formatPrice } from "@/lib/utils";
 
 export default function CartDrawer() {
   const { items, isOpen, toggleCart, removeItem, updateQuantity, subtotal } = useCart();
@@ -81,7 +82,7 @@ export default function CartDrawer() {
                         {item.selectedSize} / {item.selectedColor}
                       </p>
                       <p className="text-sm font-bold text-white mt-1.5">
-                        ${(item.product.price * item.quantity).toFixed(2)}
+                        {formatPrice(item.product.price * item.quantity)}
                       </p>
                       <div className="flex items-center gap-2 mt-2.5">
                         <div className="flex items-center border border-zinc-700 rounded-lg overflow-hidden">
@@ -135,7 +136,7 @@ export default function CartDrawer() {
             <div className="border-t border-zinc-800/80 px-6 py-5 space-y-4 bg-zinc-900/90">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-zinc-400">Subtotal</span>
-                <span className="text-xl font-bold text-white">${subtotal.toFixed(2)}</span>
+                <span className="text-xl font-bold text-white">{formatPrice(subtotal)}</span>
               </div>
               <Link
                 href="/checkout"

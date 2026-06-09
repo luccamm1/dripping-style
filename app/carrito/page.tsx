@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
+import { formatPrice } from "@/lib/utils";
 
 export default function CarritoPage() {
   const { items, removeItem, updateQuantity, subtotal, clearCart } = useCart();
@@ -71,7 +72,7 @@ export default function CarritoPage() {
                     <p className="text-xs text-zinc-400 mt-0.5">
                     {item.selectedSize} / {item.selectedColor}
                   </p>
-                  <p className="text-sm font-bold mt-2">${item.product.price.toFixed(2)}</p>
+                  <p className="text-sm font-bold mt-2">{formatPrice(item.product.price)}</p>
                   <div className="flex items-center gap-3 mt-3">
                     <button
                       onClick={() =>
@@ -123,7 +124,7 @@ export default function CarritoPage() {
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
                 <span className="text-zinc-400">Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>{formatPrice(subtotal)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-400">Envío</span>
@@ -137,7 +138,7 @@ export default function CarritoPage() {
               </div>
               <div className="border-t pt-3 flex justify-between font-semibold text-base">
                 <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+                <span>{formatPrice(total)}</span>
               </div>
             </div>
             <Link

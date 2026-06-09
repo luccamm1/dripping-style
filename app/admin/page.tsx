@@ -7,7 +7,7 @@ import { useProducts } from "@/context/ProductsContext";
 import { useOrders } from "@/context/OrdersContext";
 import { Product, Order } from "@/lib/types";
 import { categories } from "@/lib/categories";
-import { compressImage } from "@/lib/utils";
+import { compressImage, formatPrice } from "@/lib/utils";
 
 export default function AdminPage() {
   const router = useRouter();
@@ -428,7 +428,7 @@ export default function AdminPage() {
                     <tr key={product.id} className="hover:bg-zinc-800/50">
                       <td className="px-4 py-3 font-medium">{product.name}</td>
                       <td className="px-4 py-3 text-zinc-400 capitalize">{product.category}</td>
-                      <td className="px-4 py-3">${product.price.toFixed(2)}</td>
+                      <td className="px-4 py-3">{formatPrice(product.price)}</td>
                       <td className="px-4 py-3">
                         <div className="flex gap-1.5">
                           {product.isNew && <span className="text-xs bg-white text-black px-2 py-0.5 rounded-full">Nuevo</span>}
@@ -462,7 +462,7 @@ export default function AdminPage() {
                 <div className="flex items-start justify-between mb-2">
                   <div>
                     <h3 className="font-medium text-white">{product.name}</h3>
-                    <p className="text-xs text-zinc-500 capitalize mt-0.5">{product.category} · ${product.price.toFixed(2)}</p>
+                    <p className="text-xs text-zinc-500 capitalize mt-0.5">{product.category} · {formatPrice(product.price)}</p>
                   </div>
                   <div className="flex gap-1.5">
                     {product.isNew && <span className="text-xs bg-white text-black px-2 py-0.5 rounded-full">Nuevo</span>}
@@ -583,7 +583,7 @@ export default function AdminPage() {
                         <td className="px-4 py-3 font-medium">{order.id}</td>
                         <td className="px-4 py-3">{order.shippingInfo?.name || "—"}</td>
                         <td className="px-4 py-3 text-zinc-400">{order.date}</td>
-                        <td className="px-4 py-3">${order.total.toFixed(2)}</td>
+                        <td className="px-4 py-3">{formatPrice(order.total)}</td>
                         <td className="px-4 py-3">
                           <span
                             className={`text-xs font-medium px-2.5 py-1 rounded-full ${statusColors[order.status] || "bg-gray-100 text-gray-800"}`}
@@ -692,7 +692,7 @@ export default function AdminPage() {
                       </div>
                       <div className="flex justify-between text-xs text-zinc-500 mb-3">
                         <span>{order.date}</span>
-                        <span>${order.total.toFixed(2)}</span>
+                        <span>{formatPrice(order.total)}</span>
                       </div>
                       <div className="flex gap-2">
                         <button
@@ -760,7 +760,7 @@ export default function AdminPage() {
                           <span className="text-zinc-300">
                             {item.product.name} ({item.selectedSize}/{item.selectedColor}) x{item.quantity}
                           </span>
-                          <span>${(item.product.price * item.quantity).toFixed(2)}</span>
+                          <span>{formatPrice(item.product.price * item.quantity)}</span>
                         </div>
                       ))}
                     </div>
@@ -769,15 +769,15 @@ export default function AdminPage() {
                   <div className="border-t border-zinc-700 pt-3 space-y-1.5 text-sm">
                     <div className="flex justify-between">
                       <span className="text-zinc-400">Subtotal</span>
-                      <span>${viewingOrder.subtotal.toFixed(2)}</span>
+                      <span>{formatPrice(viewingOrder.subtotal)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-zinc-400">Envío</span>
-                      <span>{viewingOrder.shipping === 0 ? <span className="text-green-500">Gratis</span> : `$${viewingOrder.shipping.toFixed(2)}`}</span>
+                      <span>{viewingOrder.shipping === 0 ? <span className="text-green-500">Gratis</span> : formatPrice(viewingOrder.shipping)}</span>
                     </div>
                     <div className="flex justify-between font-semibold text-base pt-1">
                       <span>Total</span>
-                      <span>${viewingOrder.total.toFixed(2)}</span>
+                      <span>{formatPrice(viewingOrder.total)}</span>
                     </div>
                   </div>
 

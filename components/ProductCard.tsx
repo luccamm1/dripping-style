@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Product } from "@/lib/types";
+import { formatPrice } from "@/lib/utils";
 
 export default function ProductCard({ product }: { product: Product }) {
   const discount = product.originalPrice
@@ -43,9 +44,9 @@ export default function ProductCard({ product }: { product: Product }) {
       <h3 className="text-sm font-medium text-white group-hover:text-zinc-300 transition-colors line-clamp-1">{product.name}</h3>
       <p className="text-xs text-zinc-600 mt-0.5">{product.material}</p>
       <div className="flex items-center gap-2 mt-2">
-        <span className="text-base font-bold text-white">${product.price.toFixed(2)}</span>
+        <span className="text-base font-bold text-white">{formatPrice(product.price)}</span>
         {product.originalPrice && (
-          <span className="text-xs text-zinc-600 line-through">${product.originalPrice.toFixed(2)}</span>
+          <span className="text-xs text-zinc-600 line-through">{formatPrice(product.originalPrice)}</span>
         )}
       </div>
       {product.stock > 0 && product.stock <= 5 && (

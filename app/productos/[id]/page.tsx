@@ -7,6 +7,7 @@ import { useParams, notFound } from "next/navigation";
 import { useProducts } from "@/context/ProductsContext";
 import { useCart } from "@/context/CartContext";
 import ProductGrid from "@/components/ProductGrid";
+import { formatPrice } from "@/lib/utils";
 
 export default function ProductoPage() {
   const params = useParams();
@@ -87,9 +88,9 @@ export default function ProductoPage() {
           <h1 className="text-2xl sm:text-3xl font-bold mt-2">{product.name}</h1>
 
           <div className="flex items-center gap-3 mt-4">
-            <span className="text-2xl font-bold">${product.price.toFixed(2)}</span>
+            <span className="text-2xl font-bold">{formatPrice(product.price)}</span>
             {product.originalPrice && (
-              <span className="text-lg text-zinc-500 line-through">${product.originalPrice.toFixed(2)}</span>
+              <span className="text-lg text-zinc-500 line-through">{formatPrice(product.originalPrice)}</span>
             )}
           </div>
 
@@ -172,7 +173,7 @@ export default function ProductoPage() {
             disabled={product.stock === 0}
             className="mt-8 w-full bg-white text-black py-3.5 rounded-lg font-medium hover:bg-zinc-200 transition-colors disabled:bg-zinc-700 disabled:text-zinc-500 disabled:cursor-not-allowed"
           >
-            {product.stock === 0 ? "Agotado" : `Agregar al carrito — $${(product.price * quantity).toFixed(2)}`}
+            {product.stock === 0 ? "Agotado" : `Agregar al carrito — ${formatPrice(product.price * quantity)}`}
           </button>
 
           <div className="mt-6 space-y-3 text-sm text-zinc-400">

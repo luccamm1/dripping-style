@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { Order } from "@/lib/types";
+import { formatPrice } from "@/lib/utils";
 
 function ExitoContent() {
   const searchParams = useSearchParams();
@@ -53,7 +54,7 @@ function ExitoContent() {
       {order && (
         <div className="border border-zinc-800 rounded-xl p-6 mb-6 text-left">
           <p className="text-sm text-zinc-400 mb-1">Pedido: <span className="text-white font-medium">{order.id}</span></p>
-          <p className="text-sm text-zinc-400 mb-1">Total: <span className="text-white font-medium">${order.total.toFixed(2)}</span></p>
+          <p className="text-sm text-zinc-400 mb-1">Total: <span className="text-white font-medium">{formatPrice(order.total)}</span></p>
           <p className="text-sm text-zinc-400">Productos: <span className="text-white font-medium">{order.items.length}</span></p>
         </div>
       )}

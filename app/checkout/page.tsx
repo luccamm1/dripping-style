@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { useOrders } from "@/context/OrdersContext";
+import { formatPrice } from "@/lib/utils";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -246,7 +247,7 @@ export default function CheckoutPage() {
             disabled={loading}
             className="w-full bg-white text-black py-3.5 rounded-lg font-medium hover:bg-zinc-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "Redirigiendo a Mercado Pago..." : `Confirmar pedido — $${total.toFixed(2)}`}
+            {loading ? "Redirigiendo a Mercado Pago..." : `Confirmar pedido — ${formatPrice(total)}`}
           </button>
         </form>
 
@@ -271,7 +272,7 @@ export default function CheckoutPage() {
                       {item.selectedSize} / {item.selectedColor} x{item.quantity}
                     </p>
                     <p className="text-sm font-semibold mt-0.5">
-                      ${(item.product.price * item.quantity).toFixed(2)}
+                      {formatPrice(item.product.price * item.quantity)}
                     </p>
                   </div>
                 </li>
@@ -281,7 +282,7 @@ export default function CheckoutPage() {
             <div className="border-t border-zinc-800 mt-4 pt-4 space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-zinc-400">Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>{formatPrice(subtotal)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-400">Envío</span>
@@ -289,13 +290,13 @@ export default function CheckoutPage() {
                   {shipping === 0 ? (
                     <span className="text-green-600">Gratis</span>
                   ) : (
-                    `$${shipping.toFixed(2)}`
+                    formatPrice(shipping)
                   )}
                 </span>
               </div>
               <div className="border-t border-zinc-800 pt-2 flex justify-between font-semibold text-base">
                 <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+                <span>{formatPrice(total)}</span>
               </div>
             </div>
                 </div>

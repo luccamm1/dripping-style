@@ -11,6 +11,15 @@ export function isDataUrl(url: string): boolean {
   return url.startsWith("data:");
 }
 
+export function formatPrice(price: number): string {
+  return new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(price);
+}
+
 export function compressImage(file: File, maxWidth = 800, quality = 0.7): Promise<string> {
   return new Promise((resolve, reject) => {
     const img = new Image();
